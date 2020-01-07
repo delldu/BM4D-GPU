@@ -52,5 +52,7 @@ int main(int argc, char* argv[]) {
   std::cout << "PSNR denoised: " << bg::psnr(gt, denoised_image) << std::endl;
   std::cout << "PSNR reconstructed: " << bg::psnr(noisy_image, denoised_image) << std::endl;
 
+  reader.saveVideo("b.avi", denoised_image, width, height, depth);
+
   return EXIT_SUCCESS;
 }

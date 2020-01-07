@@ -107,6 +107,28 @@ void AllReader::readVideo(const std::string& filename, std::vector<unsigned char
   }
 }
 
+void AllReader::saveVideo(const std::string& filename, const std::vector<unsigned char>& volume, int width,
+                 int height, int depth)
+{
+  uchar *ptmp;
+  cv::Mat frame(height, width, CV_8UC3);
+
+  cv::VideoWriter writer("b.avi", CV_FOURCC('M', 'J', 'P', 'G'), 30, cv::Size(width,height), true);
+  for (int slice = 0; slice < 100; slice++) {
+    for (int y = 0; y < height; ++y) {
+      for (int x = 0; x < width; ++x) {
+        uchar *ptr = frame.ptr<uchar>(y , x);
+        // frame.at<uchar>(y , x) = volume[idx3(x, y, slice, width, height)];
+        ptr[0] = ptr[1] = ptr[2] = volume[idx3(x, y, slice, width, height)];
+      }
+    }
+    // Process frame
+    writer.write(frame);
+  }
+  writer.release();
+}
+
+
 void AllReader::read(const std::string& filename, std::vector<unsigned char>& volume, int& width,
                      int& height, int& depth) {
   // Determine extension
